@@ -1,4 +1,5 @@
 import { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 
@@ -10,17 +11,11 @@ import { ContexDefault } from '../App';
 // implement styles, first using styled components, then evaluate
 //the option of a css framework
 
-const Login = (props) => {
-  const { host } = props;
+const Login = () => {
   const [value, setValue] = useState({ username: '', password: '' });
-  const [data, setData] = useState({
-    data: '',
-    headers: '',
-    status: '',
-    statusText: '',
-  });
 
-  const { jwt, setJwt } = useContext(ContexDefault);
+  const { putJwt, host } = useContext(ContexDefault);
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
     setValue({ ...value, [e.target.name]: e.target.value });
@@ -34,7 +29,11 @@ const Login = (props) => {
     };
     const response = await axios.post(host + 'api/login', dataToSend);
     console.log(response);
-    setJwt(response.data.token);
+    putJwt(response.data.token);
+
+    if (response.status === 200) {
+      navigate('/dashboard');
+    }
   };
 
   return (
