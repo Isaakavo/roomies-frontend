@@ -1,24 +1,33 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useState } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import Login from './components/Login';
+import Dashboard from './components/Dashboard';
 
-const host = 'http://127.0.0.1:5000/';
-
-export const ContexDefault = createContext({ jwt: '' });
+export const ContexDefault = createContext({
+  jwt: '',
+  putJwt: () => {},
+  host: 'http://127.0.0.1:5000/',
+});
 
 const DefaultProvider = ({ children }) => {
   const [jwt, setJwt] = useState('');
-  const value = { jwt: jwt, setJwt: (jwt) => setJwt(jwt) };
+  const value = {
+    jwt,
+    putJwt: (data) => setJwt(data),
+    host: 'http://127.0.0.1:5000/',
+  };
   return (
-    <ContexDefault.Provider value={value}>
-      {children}
-    </ContexDefault.Provider>
+    <ContexDefault.Provider value={value}>{children}</ContexDefault.Provider>
   );
 };
 
 function App() {
   return (
     <DefaultProvider>
-      <Login host={host} />
+      <Routes>
+        <Route path='login' element={<Login />}></Route>
+        <Route path='dashboard' element={<Dashboard />}></Route>
+      </Routes>
     </DefaultProvider>
   );
 }
