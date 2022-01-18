@@ -30,7 +30,7 @@ function App() {
   return (
     <DefaultProvider>
       <Routes>
-        <Route path='login' element={<Login />}></Route>
+        <Route path='/' element={<Login />}></Route>
         <Route path='dashboard' element={<Dashboard />}></Route>
       </Routes>
     </DefaultProvider>
