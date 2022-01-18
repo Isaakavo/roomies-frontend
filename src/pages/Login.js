@@ -4,12 +4,22 @@ import axios from 'axios';
 import styled from 'styled-components';
 
 import { ContexDefault } from '../App';
+import LoginForm from '../components/LoginForm';
 
 //TODO
 //Investigate more about http only flag and try to implement it
 //use react context (or redux) to store the JWT returned from the service
 // implement styles, first using styled components, then evaluate
 //the option of a css framework
+
+const Wrapper = styled.div`
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 const Login = () => {
   const [value, setValue] = useState({ username: '', password: '' });
@@ -28,6 +38,7 @@ const Login = () => {
       password: value.password,
     };
     const response = await axios.post(host + 'login', dataToSend);
+    console.log(response);
     putJwt(response.data.token);
     if (response.status === 200) {
       const { token, token_type } = response.data;
@@ -45,26 +56,29 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <span>Usuario</span>
-        <input
-          type='text'
-          name='username'
-          value={value.username}
-          onChange={handleChange}
-        />
-        <br />
-        <span>Contraseña</span>
-        <input
-          type='password'
-          name='password'
-          value={value.password}
-          onChange={handleChange}
-        />
-        <input type='submit' value='Iniciar sesión' />
-      </form>
-    </div>
+    <Wrapper>
+      <LoginForm onSubmit={handleSubmit} onChange={handleChange} />
+    </Wrapper>
+    // <div>
+    //   <form onSubmit={handleSubmit}>
+    //     <span>Usuario</span>
+    //     <input
+    //       type='text'
+    //       name='username'
+    //       value={value.username}
+    //       onChange={handleChange}
+    //     />
+    //     <br />
+    //     <span>Contraseña</span>
+    //     <input
+    //       type='password'
+    //       name='password'
+    //       value={value.password}
+    //       onChange={handleChange}
+    //     />
+    //     <input type='submit' value='Iniciar sesión' />
+    //   </form>
+    // </div>
   );
 };
 
